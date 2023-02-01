@@ -21,3 +21,4 @@ jobs:
          allow_failure: true
       - if: steps.preview_label_check.outputs.label_check != 'success'
         run: echo Ready label is missing
+        run: exit 1
