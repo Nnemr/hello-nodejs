@@ -1,1 +1,23 @@
+name: Label Checker
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
 
+jobs:
+
+  check_labels:
+    name: Check labels
+    runs-on: ubuntu-latest
+    steps:
+      - id: preview_label_check
+        uses: docker://agilepathway/pull-request-label-checker:latest
+        with:
+         all_of: Ready
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         allow_failure: true
+      - if: steps.preview_label_check.outputs.label_check != 'success'
+        run: echo Ready label is missing
